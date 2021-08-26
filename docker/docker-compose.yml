@@ -1,0 +1,7 @@
+version: "3.7"
+
+services:
+  pugs-api:
+    image: "pugs-local:latest"
+    ports:
+      - "8080:8080"

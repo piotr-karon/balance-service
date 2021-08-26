@@ -1,0 +1,11 @@
+users:
+  users:
+    - username: user
+      password: password
+      initialBalance: 1234.23
+    - username: user2
+      password: password
+      initialBalance: 0.0
+    - username: user3
+      password: password
+      initialBalance: 1000.0
