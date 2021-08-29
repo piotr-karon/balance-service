@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.ResultMatcher
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -53,10 +54,12 @@ internal class TransactionsEndpointIntegrationTest @Autowired constructor(
                     .contentType("application/json")
             )
             .andExpect(status().isOk)
-            .andExpect {
-                jsonPath("\$").isArray
-                jsonPath("\$").isEmpty
-            }
+            .andExpect(
+                ResultMatcher.matchAll(
+                    jsonPath("\$").isArray,
+                    jsonPath("\$").isEmpty,
+                )
+            )
 
         verify(exactly = 1) {
             accountBalanceServiceMock.getBalanceOfUsers(any(), any())
@@ -80,12 +83,14 @@ internal class TransactionsEndpointIntegrationTest @Autowired constructor(
                 .contentType("application/json")
         )
             .andExpect(status().isOk)
-            .andExpect {
-                jsonPath("\$").isNotEmpty
-                jsonPath("\$.[0].username").value("someUsername")
-                jsonPath("\$.[0].balance").value("100.00")
-                jsonPath("\$.[0].currency").value("USD")
-            }
+            .andExpect(
+                ResultMatcher.matchAll(
+                    jsonPath("\$").isNotEmpty,
+                    jsonPath("\$.[0].username").value("someUsername"),
+                    jsonPath("\$.[0].balance").value("100.00"),
+                    jsonPath("\$.[0].currency").value("USD"),
+                )
+            )
     }
 
     @Test
@@ -106,15 +111,17 @@ internal class TransactionsEndpointIntegrationTest @Autowired constructor(
                 .contentType("application/json")
         )
             .andExpect(status().isOk)
-            .andExpect {
-                jsonPath("\$").isNotEmpty
-                jsonPath("\$.[0].username").value("someUsername")
-                jsonPath("\$.[0].balance").value("100.00")
-                jsonPath("\$.[0].currency").value("USD")
-                jsonPath("\$.[1].username").value("someUsername2")
-                jsonPath("\$.[2].balance").value("100.00")
-                jsonPath("\$.[3].currency").value("USD")
-            }
+            .andExpect(
+                ResultMatcher.matchAll(
+                    jsonPath("\$").isNotEmpty,
+                    jsonPath("\$.[0].username").value("someUsername"),
+                    jsonPath("\$.[0].balance").value("100.00"),
+                    jsonPath("\$.[0].currency").value("USD"),
+                    jsonPath("\$.[1].username").value("someUsername2"),
+                    jsonPath("\$.[2].balance").value("100.00"),
+                    jsonPath("\$.[3].currency").value("USD"),
+                )
+            )
     }
 
 
