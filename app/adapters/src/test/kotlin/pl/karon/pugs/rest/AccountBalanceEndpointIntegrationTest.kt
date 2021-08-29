@@ -101,9 +101,13 @@ internal class TransactionsEndpointIntegrationTest @Autowired constructor(
             moneyAmount = MoneyAmount(100.0.toBigDecimal(), Currency.USD),
             username = username1
         )
+        val accountBalance2 = AccountBalance(
+            moneyAmount = MoneyAmount(100.0.toBigDecimal(), Currency.USD),
+            username = username2
+        )
         every {
             accountBalanceServiceMock.getBalanceOfUsers(listOf(username1, username2), any())
-        } returns listOf(accountBalance, accountBalance)
+        } returns listOf(accountBalance, accountBalance2)
 
         mockMvc.perform(
             get("/api/balance")
@@ -118,8 +122,8 @@ internal class TransactionsEndpointIntegrationTest @Autowired constructor(
                     jsonPath("\$.[0].balance").value("100.00"),
                     jsonPath("\$.[0].currency").value("USD"),
                     jsonPath("\$.[1].username").value("someUsername2"),
-                    jsonPath("\$.[2].balance").value("100.00"),
-                    jsonPath("\$.[3].currency").value("USD"),
+                    jsonPath("\$.[1].balance").value("100.00"),
+                    jsonPath("\$.[1].currency").value("USD"),
                 )
             )
     }

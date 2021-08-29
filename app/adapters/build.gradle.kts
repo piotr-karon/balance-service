@@ -35,7 +35,5 @@ dependencies {
     }
     testImplementation("org.springframework.security:spring-security-test")
 
-    testImplementation("org.amshove.kluent:kluent:1.68")
-    testImplementation("io.mockk:mockk:1.12.0")
     testImplementation("com.ninja-squad:springmockk:3.0.1")
 }
